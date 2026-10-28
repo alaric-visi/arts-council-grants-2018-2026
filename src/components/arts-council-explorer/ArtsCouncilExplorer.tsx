@@ -301,7 +301,7 @@ export const ArtsCouncilExplorer = ({
   };
 
   return (
-    <div className="flex flex-col flex-1 w-full pt-14 lg:pt-[57px] text-white font-sans selection:bg-white selection:text-black relative bg-black">
+    <div className="flex flex-col flex-1 w-full text-white font-sans selection:bg-white selection:text-black relative bg-black">
       {/* Fixed background image & atmospheric gradient matching json-grid-view */}
       <div
         className="fixed inset-0 bg-cover bg-center bg-no-repeat -z-10"
@@ -310,7 +310,7 @@ export const ArtsCouncilExplorer = ({
       <div className="fixed inset-0 bg-gradient-to-b from-black/20 via-black/60 to-black -z-10" />
 
       {/* FULL SCREEN APPLICATION STUDIO CARD */}
-      <div className="flex flex-1 w-full min-h-[calc(100dvh-85px)] lg:h-[calc(100dvh-85px)] flex-col overflow-hidden relative p-0 m-0">
+      <div className="flex flex-1 w-full min-h-dvh lg:h-dvh flex-col overflow-hidden relative p-0 m-0">
         <main className="flex-1 w-full h-full flex flex-col overflow-hidden relative p-0 m-0">
           <div className="w-full flex-1 h-full flex flex-col overflow-hidden bg-white/[0.02] backdrop-blur-md">
             {/* App Header Bar (H1 integrated inside the app) */}
