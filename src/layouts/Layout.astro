@@ -1,0 +1,75 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/geist';
+import '@fontsource-variable/jetbrains-mono';
+import '../index.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  image?: string;
+  keywords?: string;
+}
+
+const {
+  title = "Arts Council Funding Grants 2018–2026",
+  description = "Interactive data explorer and analytics dashboard for Arts Council England National Lottery Project Grants (2018–19 onwards).",
+  canonicalPath,
+  image = '/favicon.png',
+  keywords = 'Arts Council England, ACE grants, National Lottery Project Grants, arts funding, cultural grants UK, funding analytics'
+} = Astro.props;
+
+const siteUrl = Astro.site?.toString().replace(/\/+$/, '') || 'https://grants.mikehiggins.me.uk';
+const canonicalURL = new URL(canonicalPath || Astro.url.pathname, siteUrl);
+const ogImageURL = new URL(image, siteUrl);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Arts Council Funding Grants Explorer",
+  description: description,
+  url: siteUrl,
+  author: {
+    "@type": "Person",
+    name: "Mike Higgins",
+    url: "https://mikehiggins.me.uk"
+  }
+};
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Arts Council Funding Grants" />
+    <meta property="og:locale" content="en_GB" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="bg-black text-white min-h-screen flex flex-col font-sans selection:bg-white selection:text-black">
+    <slot />
+  </body>
+</html>

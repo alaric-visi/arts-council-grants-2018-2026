@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ArtsCouncilExplorer } from '../components/arts-council-explorer';
+
+export const prerender = false;
+
+const pathname = Astro.url.pathname;
+---
+
+<Layout
+  title="Arts Council Funding Grants 2018–2026"
+  description="Interactive data explorer and analytics dashboard for Arts Council England National Lottery Project Grants (2018–19 onwards)."
+  canonicalPath={pathname}
+>
+  <main class="flex-1 flex flex-col min-h-screen">
+    <ArtsCouncilExplorer
+      client:only="react"
+      basePath=""
+      backHref="https://mikehiggins.me.uk"
+      backLabel="Mike Higgins Portfolio"
+      citationName="Arts Council Funding Explorer (grants.mikehiggins.me.uk)"
+    />
+  </main>
+</Layout>
