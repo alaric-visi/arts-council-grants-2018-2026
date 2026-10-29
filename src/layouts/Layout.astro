@@ -16,7 +16,7 @@ const {
   title = "Arts Council Funding Grants 2018–2026",
   description = "Interactive data explorer and analytics dashboard for Arts Council England National Lottery Project Grants (2018–19 onwards).",
   canonicalPath,
-  image = '/favicon.png',
+  image = '/og-image.png',
   keywords = 'Arts Council England, ACE grants, National Lottery Project Grants, arts funding, cultural grants UK, funding analytics'
 } = Astro.props;
 
@@ -26,15 +26,50 @@ const ogImageURL = new URL(image, siteUrl);
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "Arts Council Funding Grants Explorer",
-  description: description,
-  url: siteUrl,
-  author: {
-    "@type": "Person",
-    name: "Mike Higgins",
-    url: "https://mikehiggins.me.uk"
-  }
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      "name": "Arts Council Funding Grants Explorer",
+      "description": description,
+      "url": siteUrl,
+      "author": {
+        "@type": "Person",
+        "name": "Mike Higgins",
+        "url": "https://mikehiggins.me.uk"
+      }
+    },
+    {
+      "@type": "Dataset",
+      "@id": `${siteUrl}/#dataset`,
+      "name": "Arts Council England National Lottery Project Grants (2018–2026)",
+      "description": "Comprehensive public funding archive, grant awards, recipients, artistic disciplines, and regional allocations from Arts Council England National Lottery Project Grants.",
+      "url": siteUrl,
+      "temporalCoverage": "2018-04-01/2026-03-31",
+      "spatialCoverage": {
+        "@type": "Place",
+        "name": "England, United Kingdom"
+      },
+      "creator": {
+        "@type": "Person",
+        "name": "Mike Higgins",
+        "url": "https://mikehiggins.me.uk"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Arts Council England",
+        "url": "https://www.artscouncil.org.uk"
+      },
+      "license": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/json",
+          "contentUrl": `${siteUrl}/data/arts-council-grants.json`
+        }
+      ]
+    }
+  ]
 };
 ---
 
@@ -56,6 +91,9 @@ const jsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Arts Council England Funding Grants Explorer (2018–2026)" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Arts Council Funding Grants" />
     <meta property="og:locale" content="en_GB" />
