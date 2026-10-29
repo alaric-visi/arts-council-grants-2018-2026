@@ -318,22 +318,8 @@ export const ArtsCouncilExplorer = ({
       <div className="flex flex-1 w-full min-h-dvh lg:h-dvh flex-col overflow-hidden relative p-0 m-0">
         <main className="flex-1 w-full h-full flex flex-col overflow-hidden relative p-0 m-0">
           <div className="w-full flex-1 h-full flex flex-col overflow-hidden bg-white/[0.02] backdrop-blur-md relative">
-            {/* Loading Overlay with 5s minimum display and crawler pass-through */}
-            {showOverlay && (
-              <div
-                className={`absolute inset-0 z-50 flex items-center justify-center bg-[#050505] transition-opacity duration-500 ease-out ${
-                  isFading ? "opacity-0 pointer-events-none" : "opacity-100"
-                }`}
-                aria-hidden={isFading}
-                role="status"
-                aria-label="Loading grant archives"
-              >
-                <ArcSignalLoader />
-              </div>
-            )}
-
-            {/* App Header Bar (H1 integrated inside the app) */}
-            <header className="border-b border-white/10 bg-white/[0.03] px-3 sm:px-4 py-1.5 sm:py-2 flex items-center justify-between gap-2.5 flex-wrap flex-shrink-0">
+            {/* App Header Bar (H1 integrated inside the app) - always present */}
+            <header className="border-b border-white/10 bg-white/[0.03] px-3 sm:px-4 py-1.5 sm:py-2 flex items-center justify-between gap-2.5 flex-wrap flex-shrink-0 z-20 relative">
               <div className="flex items-center gap-2.5 min-w-0">
                 {backHref && (
                   <BackLink href={backHref} label={backLabel} />
@@ -427,6 +413,21 @@ export const ArtsCouncilExplorer = ({
                 </div>
               </div>
             </header>
+
+            {/* Workspace Area with Loading Overlay */}
+            <div className="relative flex-1 flex flex-col min-h-0 overflow-hidden">
+              {showOverlay && (
+                <div
+                  className={`absolute inset-0 z-40 flex items-center justify-center bg-[#050505] transition-opacity duration-500 ease-out ${
+                    isFading ? "opacity-0 pointer-events-none" : "opacity-100"
+                  }`}
+                  aria-hidden={isFading}
+                  role="status"
+                  aria-label="Initialising"
+                >
+                  <ArcSignalLoader label="Initialising" />
+                </div>
+              )}
 
             {/* Error / Notice Banners */}
             {error && (
@@ -579,6 +580,7 @@ export const ArtsCouncilExplorer = ({
                 </div>
               </ExportContext.Provider>
             )}
+            </div>
           </div>
         </main>
       </div>

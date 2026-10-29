@@ -40,8 +40,8 @@ export const isBotOrCrawler = (): boolean => {
 
 export const ArcSignalLoader = ({
   size: fixedSize,
-  label = "INITIALISING ARCHIVE SIGNAL",
-  sublabel = "15,000+ National Lottery Project Grants · 2018–2026"
+  label = "Initialising",
+  sublabel
 }: ArcSignalLoaderProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -106,7 +106,7 @@ export const ArcSignalLoader = ({
       if (fixedSize) return fixedSize;
       const vw = (typeof window !== "undefined" ? window.innerWidth : 800) || 800;
       const vh = (typeof window !== "undefined" ? window.innerHeight : 600) || 600;
-      return Math.round(Math.max(140, Math.min(Math.min(vw, vh) * 0.44, 380)));
+      return Math.round(Math.max(110, Math.min(Math.min(vw, vh) * 0.22, 160)));
     }
 
     function resize() {
@@ -612,15 +612,15 @@ export const ArcSignalLoader = ({
   }, [fixedSize]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-5 p-4 select-none" role="status" aria-label={label}>
+    <div className="flex flex-col items-center justify-center gap-3.5 p-4 select-none" role="status" aria-label={label}>
       <canvas
         ref={canvasRef}
         className="block rounded-full overflow-hidden shadow-[0_0_0_1px_rgba(255,255,255,0.08)] bg-[#050505]"
       />
       {(label || sublabel) && (
-        <div className="flex flex-col items-center gap-1.5 font-mono text-center">
+        <div className="flex flex-col items-center gap-1 font-mono text-center">
           {label && (
-            <div className="flex items-center gap-2 text-xs sm:text-sm tracking-[0.2em] text-white/80 font-medium">
+            <div className="flex items-center gap-2 text-xs tracking-wider text-white/80 font-normal">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
               <span>{label}</span>
             </div>
