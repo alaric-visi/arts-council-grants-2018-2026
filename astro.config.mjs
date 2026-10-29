@@ -5,7 +5,7 @@ import netlify from '@astrojs/netlify';
 
 export default defineConfig({
   site: process.env.PUBLIC_SITE_URL || 'https://grants.mikehiggins.me.uk',
-  adapter: netlify(),
+  adapter: netlify({ devFeatures: false }),
   integrations: [
     react(),
     tailwind({ applyBaseStyles: false }),

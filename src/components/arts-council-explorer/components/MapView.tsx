@@ -14,6 +14,7 @@ import { formatPerPerson, perPerson } from "../lib/places";
 import type { PlaceIndex } from "../lib/places";
 import { toCsv } from "../lib/csv";
 import { ChartCard, ChartTable, FilterButton, FOCUS_RING, SegmentedToggle } from "./ui";
+import { ArcSignalLoader } from "./ArcSignalLoader";
 
 type LadFeature = Feature<Geometry, { code: string; name: string }>;
 
@@ -209,9 +210,9 @@ export const MapView = ({
       table={table}
     >
       {status === "loading" || status === "idle" ? (
-        <p className="mt-6 text-sm text-white/70" role="status">
-          Loading the map…
-        </p>
+        <div className="flex flex-col items-center justify-center py-16" role="status">
+          <ArcSignalLoader size={180} label="LOADING MAP BOUNDARIES" sublabel="English Local Authorities" />
+        </div>
       ) : !geo ? (
         <div className="mt-6 space-y-4">
           <p className="text-sm text-white/75">

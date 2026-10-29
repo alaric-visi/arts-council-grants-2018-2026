@@ -16,8 +16,8 @@ import { ActiveFilterBar } from "./components/ActiveFilterBar";
 import { AnalyticsView } from "./components/AnalyticsView";
 import { BackLink } from "./components/BackLink";
 import { FilterPanel } from "./components/FilterPanel";
-import { GooLoader } from "./components/GooLoader";
-import { LoadingSkeleton } from "./components/LoadingSkeleton";
+import { ArcSignalLoader } from "./components/ArcSignalLoader";
+import { useArcSignalLoading } from "./hooks/useArcSignalLoading";
 import { GrantDrawer } from "./components/GrantDrawer";
 import { GrantsTable } from "./components/GrantsTable";
 import { StatCards } from "./components/StatCards";
@@ -99,6 +99,11 @@ export const ArtsCouncilExplorer = ({
 }: ArtsCouncilExplorerProps) => {
   const dataUrls = Array.isArray(dataUrl) ? dataUrl : [dataUrl];
   const { grants, meta, source, loading, notice, error } = useGrantsData({ initialData, dataUrls, sampleDataUrl, metaUrl, useSupabase });
+  const { showOverlay, isFading } = useArcSignalLoading({
+    dataLoading: loading,
+    minDurationMs: 5000,
+    fadeDurationMs: 500
+  });
   const [state, dispatch] = useExplorerState({ syncUrl, basePath });
   const reducedMotion = usePrefersReducedMotion();
 
@@ -312,7 +317,21 @@ export const ArtsCouncilExplorer = ({
       {/* FULL SCREEN APPLICATION STUDIO CARD */}
       <div className="flex flex-1 w-full min-h-dvh lg:h-dvh flex-col overflow-hidden relative p-0 m-0">
         <main className="flex-1 w-full h-full flex flex-col overflow-hidden relative p-0 m-0">
-          <div className="w-full flex-1 h-full flex flex-col overflow-hidden bg-white/[0.02] backdrop-blur-md">
+          <div className="w-full flex-1 h-full flex flex-col overflow-hidden bg-white/[0.02] backdrop-blur-md relative">
+            {/* Loading Overlay with 5s minimum display and crawler pass-through */}
+            {showOverlay && (
+              <div
+                className={`absolute inset-0 z-50 flex items-center justify-center bg-[#050505] transition-opacity duration-500 ease-out ${
+                  isFading ? "opacity-0 pointer-events-none" : "opacity-100"
+                }`}
+                aria-hidden={isFading}
+                role="status"
+                aria-label="Loading grant archives"
+              >
+                <ArcSignalLoader />
+              </div>
+            )}
+
             {/* App Header Bar (H1 integrated inside the app) */}
             <header className="border-b border-white/10 bg-white/[0.03] px-3 sm:px-4 py-1.5 sm:py-2 flex items-center justify-between gap-2.5 flex-wrap flex-shrink-0">
               <div className="flex items-center gap-2.5 min-w-0">
@@ -447,18 +466,11 @@ export const ArtsCouncilExplorer = ({
             />
 
             {/* Workspace Scroll Area */}
-            {loading ? (
-              <div className="flex-1 flex flex-col items-center justify-center p-8 text-white/65">
-                {loadingStyle === "goo" ? (
-                  <>
-                    <GooLoader />
-                    <p className="font-mono text-sm tracking-widest uppercase mt-8">Loading grant archives...</p>
-                  </>
-                ) : (
-                  <LoadingSkeleton count={meta?.row_count ?? null} />
-                )}
+            {error ? (
+              <div className="flex-1 flex items-center justify-center p-8 text-rose-400 font-mono text-sm">
+                {error}
               </div>
-            ) : error ? null : (
+            ) : (
               <ExportContext.Provider value={exportLabels}>
                 <div className={`flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 lg:px-8 py-5 space-y-6 transition-opacity motion-reduce:transition-none ${pending ? "opacity-60" : ""}`}>
                   {state.profile ? (
@@ -525,7 +537,13 @@ export const ArtsCouncilExplorer = ({
                       )}
 
                       {state.tab === "map" && (
-                        <Suspense fallback={<p className="text-sm text-white/70" role="status">Loading the map…</p>}>
+                        <Suspense
+                          fallback={
+                            <div className="flex flex-col items-center justify-center py-20" role="status">
+                              <ArcSignalLoader size={180} label="LOADING MAP BOUNDARIES" sublabel="English Local Authorities" />
+                            </div>
+                          }
+                        >
                           <MapView
                             status={mapUrl ? mapData.status : "missing"}
                             map={mapData.map}
