@@ -4,7 +4,7 @@ import path from 'node:path';
 import { toSlug } from '../components/arts-council-explorer/lib/url-state';
 import { recipientKey } from '../components/arts-council-explorer/lib/recipients';
 
-export const prerender = false;
+export const prerender = true;
 
 export const GET: APIRoute = async ({ site }) => {
   const siteUrl = site ? site.toString().replace(/\/+$/, '') : 'https://grants.mikehiggins.me.uk';
